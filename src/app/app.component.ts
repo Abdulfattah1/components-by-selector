@@ -6,12 +6,12 @@ import {
   ViewContainerRef,
 } from "@angular/core";
 import { Store } from "@ngxs/store";
-import { DynamicComponentService } from "./common/dynamic-component.service";
+import { ComponentState } from "./dynamic-components/dynamic-components-state";
 import {
   RegisterEditComponents,
   RegisterViewComponents,
 } from "./dynamic-components/dynamic-components.actions";
-
+import { DynamicComponentsService } from "./shared/dynamic-forms/services/dynamic-components.service";
 export interface DynamicContentInputs {
   [k: string]: any;
 }
@@ -33,7 +33,17 @@ export class AppComponent {
     this.store.dispatch(new RegisterEditComponents());
     this.store.dispatch(new RegisterViewComponents());
     setTimeout(() => {
+      // JUST FOR TESTING
+      // IT SHOULD BE HANDELD OTHER WAY IN THE STATE
       this.loading = true;
+
+      this.store
+        .select(
+          ComponentState.editComponentFactoryBySelectorName("app-text-input")
+        )
+        .subscribe((data) => {
+          this.container.createComponent(data);
+        });
     }, 1000);
   }
 
@@ -42,27 +52,13 @@ export class AppComponent {
 
   showComponent = false;
   constructor(
-    private componentService: DynamicComponentService,
+    private componentService: DynamicComponentsService,
     private store: Store
   ) {
     this.data = {
       firstName: "abdel fattah",
       lastName: "Khudari",
     };
-  }
-
-  addDynamicComponent() {
-    this.componentService
-      .getComponentBySelector("app-dynamic1", () =>
-        import("./child1/child1.module").then((m) => m.Child1Module)
-      )
-      .then((componentRef) => {
-        this.container.insert(componentRef.hostView);
-      });
-  }
-
-  getModuleLoader() {
-    return () => import("./child1/child1.module").then((m) => m.Child1Module);
   }
 
   addComponentInputs(
