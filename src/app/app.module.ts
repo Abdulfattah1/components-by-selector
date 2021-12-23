@@ -2,7 +2,6 @@ import { APP_INITIALIZER, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from "./app.component";
-import { DynamicSelectorComponent } from "./dynamic-selector/dynamic-selector.component";
 import { NgxsModule, Store } from "@ngxs/store";
 import { ComponentState } from "./dynamic-components/dynamic-components-state";
 import { DynamicFormsModule } from "./shared/dynamic-forms/dynamic-forms.module";
@@ -19,7 +18,7 @@ import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
     NgxsLoggerPluginModule.forRoot(),
     DynamicFormsModule,
   ],
-  declarations: [AppComponent, DynamicSelectorComponent],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: [],
 })
